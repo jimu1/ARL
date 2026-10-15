@@ -92,12 +92,36 @@ WXWORK:
 
 
 #邮件发送配置
+#邮箱注册功能的验证码邮件复用此处的发信账号
 EMAIL:
   HOST: ""
   PORT: ""
   USERNAME: ""
   PASSWORD: ""
   TO: ""
+
+
+#邮箱注册功能配置
+#接口：POST /api/user/register/send_code -> POST /api/user/register/verify_code -> POST /api/user/register
+REGISTER:
+  #是否开启邮箱注册
+  ENABLE: true
+  #验证码有效期（秒），建议不超过 300
+  CODE_TTL: 300
+  #验证码最大尝试次数，超过即失效
+  CODE_MAX_ATTEMPTS: 3
+  #同一邮箱两次发送验证码的最小间隔（秒）
+  SEND_INTERVAL: 60
+  #同一邮箱每日发送验证码上限
+  SEND_DAILY_LIMIT: 10
+  #同一 IP 每小时发送验证码上限
+  SEND_IP_HOURLY_LIMIT: 20
+  #同一 IP 每小时注册上限
+  IP_HOURLY_LIMIT: 10
+  #注册密码最小长度
+  PASSWORD_MIN_LENGTH: 8
+  #部署在可信反向代理（如 nginx）之后时置 true，届时按 X-Forwarded-For 的首个 IP 限流
+  TRUST_PROXY: false
 
 # 监控任务 WEBHOOK 配置
 # IP/域名监控和站点监控结束后会往下面的URL POST提交JSON数据

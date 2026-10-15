@@ -80,6 +80,19 @@ class Config(object):
     # FORBIDDEN_DOMAINS = ["gov.cn", "edu.cn", "org.cn"]
     FORBIDDEN_DOMAINS = []
 
+    # *** 邮箱注册功能配置 ***
+    REGISTER_ENABLE = True                  # 是否开启邮箱注册
+    REGISTER_CODE_LENGTH = 6                # 验证码位数
+    REGISTER_CODE_TTL = 300                 # 验证码有效期（秒），不超过 5 分钟
+    REGISTER_CODE_MAX_ATTEMPTS = 3          # 验证码最大尝试次数，超过即失效需重新获取
+    REGISTER_SEND_INTERVAL = 60             # 同一邮箱两次发送验证码的最小间隔（秒）
+    REGISTER_SEND_DAILY_LIMIT = 10          # 同一邮箱每日发送验证码上限
+    REGISTER_SEND_IP_HOURLY_LIMIT = 20      # 同一 IP 每小时发送验证码上限
+    REGISTER_IP_HOURLY_LIMIT = 10           # 同一 IP 每小时注册上限
+    REGISTER_TICKET_TTL = 600               # 验证码校验通过后票据的有效期（秒）
+    REGISTER_PASSWORD_MIN_LENGTH = 8        # 注册密码最小长度
+    REGISTER_TRUST_PROXY = False            # 部署在可信反向代理之后才置 True，届时使用 X-Forwarded-For
+
     GITHUB_TOKEN = ""
     GITHUB_HASH_FILE = os.path.join(TMP_PATH, 'github.hash')
 
@@ -181,6 +194,36 @@ try:
 
         if y["EMAIL"].get("TO"):
             Config.EMAIL_TO = y["EMAIL"]["TO"]
+
+    # *** 邮箱注册功能配置 ***
+    if y.get("REGISTER"):
+        reg = y["REGISTER"]
+        if reg.get("ENABLE") is not None:
+            Config.REGISTER_ENABLE = bool(reg["ENABLE"])
+
+        if reg.get("CODE_TTL"):
+            Config.REGISTER_CODE_TTL = int(reg["CODE_TTL"])
+
+        if reg.get("CODE_MAX_ATTEMPTS"):
+            Config.REGISTER_CODE_MAX_ATTEMPTS = int(reg["CODE_MAX_ATTEMPTS"])
+
+        if reg.get("SEND_INTERVAL"):
+            Config.REGISTER_SEND_INTERVAL = int(reg["SEND_INTERVAL"])
+
+        if reg.get("SEND_DAILY_LIMIT"):
+            Config.REGISTER_SEND_DAILY_LIMIT = int(reg["SEND_DAILY_LIMIT"])
+
+        if reg.get("SEND_IP_HOURLY_LIMIT"):
+            Config.REGISTER_SEND_IP_HOURLY_LIMIT = int(reg["SEND_IP_HOURLY_LIMIT"])
+
+        if reg.get("IP_HOURLY_LIMIT"):
+            Config.REGISTER_IP_HOURLY_LIMIT = int(reg["IP_HOURLY_LIMIT"])
+
+        if reg.get("PASSWORD_MIN_LENGTH"):
+            Config.REGISTER_PASSWORD_MIN_LENGTH = int(reg["PASSWORD_MIN_LENGTH"])
+
+        if reg.get("TRUST_PROXY") is not None:
+            Config.REGISTER_TRUST_PROXY = bool(reg["TRUST_PROXY"])
 
     # *** GITHUB TOKEN 配置 ***
     if y.get("GITHUB"):

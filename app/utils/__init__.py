@@ -232,7 +232,8 @@ def is_valid_exclude_ports(exclude_ports):
         return False
 
 
-from .user import user_login, user_login_header, auth, user_logout, change_pass
+from .user import user_login, user_login_header, auth, user_logout, change_pass, verify_password
 from .push import message_push
 from .fingerprint import parse_human_rule, transform_rule_map
+from .register import register_send_code, register_verify_code, register_user
 
